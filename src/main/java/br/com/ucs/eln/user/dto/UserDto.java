@@ -11,6 +11,7 @@ public class UserDto {
     private UserLockDto lock;
     private String description;
     private byte[] image;
+    private Long groupId;
 
     public Long getId() {
         return id;
@@ -74,5 +75,13 @@ public class UserDto {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
     }
 }

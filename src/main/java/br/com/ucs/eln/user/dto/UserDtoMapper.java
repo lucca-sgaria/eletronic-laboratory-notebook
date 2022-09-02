@@ -26,6 +26,7 @@ public class UserDtoMapper {
         entity.setUsername(user.getUsername());
         entity.setDescription(user.getDescription());
         entity.setImage(user.getImage());
+        entity.setGroupId(user.getGroup().getId());
 
         return entity;
     }

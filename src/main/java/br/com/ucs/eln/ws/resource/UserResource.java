@@ -1,5 +1,6 @@
 package br.com.ucs.eln.ws.resource;
 
+import br.com.ucs.eln.group.exception.GroupException;
 import br.com.ucs.eln.user.dto.UserDto;
 import br.com.ucs.eln.user.dto.UserDtoMapper;
 import br.com.ucs.eln.user.exception.UserException;
@@ -8,8 +9,6 @@ import br.com.ucs.eln.user.model.User;
 import br.com.ucs.eln.ws.request.UserLoginRequest;
 import br.com.ucs.eln.ws.request.UserRegistrationRequest;
 import org.jboss.resteasy.reactive.RestQuery;
-import org.jboss.resteasy.reactive.RestResponse;
-import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -35,8 +34,8 @@ public class UserResource {
 
     @POST
     @Path("/register")
-    public UserDto registration(UserRegistrationRequest request) throws UserException {
-        User user = facade.registration(request.getEmail());
+    public UserDto registration(UserRegistrationRequest request) throws UserException, GroupException {
+        User user = facade.registration(request.getEmail(), request.getGroupId());
         return dtoMapper.map(user);
     }
 
@@ -95,14 +94,6 @@ public class UserResource {
     public Response delete(Long id) throws UserException {
         facade.delete(id);
         return Response.ok().build();
-    }
-
-    @ServerExceptionMapper
-    public RestResponse<String> mapException(UserException ex) {
-        return switch (ex.getKey()) {
-            case USER_EMAIL_ALREADY_REGISTERED -> RestResponse.status(Response.Status.BAD_REQUEST, ex.toString());
-            case USER_NOT_FOUND -> RestResponse.status(Response.Status.NOT_FOUND, ex.toString());
-        };
     }
 
 }

@@ -12,6 +12,7 @@ import io.quarkus.panache.common.Sort;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.NoResultException;
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -59,6 +60,16 @@ public class UserRepository implements PanacheRepository<User> {
             throw new UserException(UserExceptionKey.USER_NOT_FOUND);
         }
         return user;
+    }
+
+    public List<User> findExistingByIdList(List<Long> idList) throws UserException {
+        if(idList.isEmpty()) return new ArrayList<>();
+
+        List<User> userList = find("id in (?1)", idList).list();
+        if(userList.size() != idList.size()) {
+            throw new UserException(UserExceptionKey.USER_NOT_FOUND);
+        }
+        return userList;
     }
 
     public User updateUserFields(User user, UserDto userDto) {

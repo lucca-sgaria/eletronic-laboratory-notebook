@@ -1,6 +1,10 @@
 package br.com.ucs.eln.group.repository;
 
+import br.com.ucs.eln.group.dto.GroupDto;
+import br.com.ucs.eln.group.exception.GroupException;
+import br.com.ucs.eln.group.exception.GroupExceptionKey;
 import br.com.ucs.eln.group.model.Group;
+import br.com.ucs.eln.user.model.User;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
@@ -11,54 +15,52 @@ import java.util.List;
 @ApplicationScoped
 public class GroupRepository implements PanacheRepository<Group> {
 
+    public boolean existsByName(String name) {
+        return find("name = ?1", name)
+                .firstResultOptional()
+                .isPresent();
+    }
+
     public List<Group> list(int page, int pageSize) {
         return findAll(Sort.by("id"))
                 .page(Page.of(page, pageSize))
                 .list();
     }
 
-//    public int pageCount(int pageSize) {
-//        return findAll()
-//                .page(Page.ofSize(pageSize))
-//                .pageCount();
-//    }
-//
-//    public List<User> partialSearch(String searchKey, int page, int pageSize) {
-//        String query = "lower(fullName) LIKE ?1 " +
-//                " OR lower(username) LIKE ?1 " +
-//                " OR lower(email) LIKE ?1 ";
-//
-//        return find(query, searchKey.toLowerCase() + "%" )
-//                .page(Page.of(page, pageSize))
-//                .list();
-//    }
-//
-//    public User findExistingById(Long id) throws UserException {
-//        User user = findById(id);
-//        if (user == null) {
-//            throw new UserException(UserExceptionKey.USER_NOT_FOUND);
-//        }
-//        return user;
-//    }
-//
-//    public User updateUserFields(User user, UserDto userDto) {
-//        user.setFullName(userDto.getFullName());
-//        user.setLock(getLock(userDto.getLock()));
-//        user.setEmail(userDto.getEmail());
-//        user.setCreated(userDto.getCreated());
-//        user.setUsername(userDto.getUsername());
-//        user.setDescription(userDto.getDescription());
-//        user.setImage(userDto.getImage());
-//        return user;
-//    }
-//
-//    private UserLock getLock(UserLockDto lock) {
-//        return switch (lock) {
-//            case LOCKED -> UserLock.LOCKED;
-//            case UNLOCKED -> UserLock.UNLOCKED;
-//            case PENDING -> UserLock.PENDING;
-//        };
-//    }
+    public int pageCount(int pageSize) {
+        return findAll()
+                .page(Page.ofSize(pageSize))
+                .pageCount();
+    }
+
+    public List<Group> partialSearch(String searchKey, int page, int pageSize) {
+        String query = "lower(name) LIKE ?1 " +
+                " OR lower(description) LIKE ?1 ";
+
+        return find(query, searchKey.toLowerCase() + "%")
+                .page(Page.of(page, pageSize))
+                .list();
+    }
+
+    public Group findExistingById(Long id) throws GroupException {
+        var group = findById(id);
+        if (group == null) {
+            throw new GroupException(GroupExceptionKey.GROUP_NOT_FOUND);
+        }
+        return group;
+    }
+
+    public Group updateGroupFields(Group group, GroupDto groupDto) {
+        group.setName(groupDto.getName());
+        group.setDescription(groupDto.getDescription());
+        group.setAdmin(groupDto.isAdmin());
+        //group.setFunctions(groupDto.getFunctions());
+        return group;
+    }
+
+    public void updateGroupUsers(Group group, List<User> userList) {
+        userList.forEach(user -> user.setGroup(group));
+    }
 
 
 }

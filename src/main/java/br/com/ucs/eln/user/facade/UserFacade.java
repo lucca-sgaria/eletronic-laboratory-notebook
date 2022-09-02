@@ -1,12 +1,13 @@
 package br.com.ucs.eln.user.facade;
 
+import br.com.ucs.eln.group.exception.GroupException;
+import br.com.ucs.eln.group.repository.GroupRepository;
 import br.com.ucs.eln.user.business.UserRegistrationEmailSender;
 import br.com.ucs.eln.user.dto.UserDto;
 import br.com.ucs.eln.user.exception.UserException;
 import br.com.ucs.eln.user.generator.UserGenerator;
 import br.com.ucs.eln.user.model.User;
 import br.com.ucs.eln.user.repository.UserRepository;
-import br.com.ucs.eln.user.validator.UserRegistrationValidator;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -19,17 +20,19 @@ public class UserFacade {
     @Inject
     UserRepository userRepository;
     @Inject
+    GroupRepository groupRepository;
+    @Inject
     UserGenerator userGenerator;
     @Inject
     UserRegistrationEmailSender emailSender;
-    @Inject
-    UserRegistrationValidator userRegistrationValidator;
 
     @Transactional
-    public User registration(String email) throws UserException {
-        userRegistrationValidator.validate(email);
+    public User registration(String email, Long groupId) throws UserException, GroupException {
+        var group = groupRepository.findExistingById(groupId);
+        var user = userGenerator.generatePendingUser(email, group);
+
         emailSender.send(email);
-        return userGenerator.generatePendingUser(email);
+        return user;
     }
 
     public List<User> list(int page, int pageSize) {
