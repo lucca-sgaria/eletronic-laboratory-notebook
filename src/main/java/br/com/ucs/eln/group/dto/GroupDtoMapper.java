@@ -1,16 +1,15 @@
 package br.com.ucs.eln.group.dto;
 
+import br.com.ucs.eln.globals.DateUtil;
+import br.com.ucs.eln.group.model.Function;
 import br.com.ucs.eln.group.model.Group;
 
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestScoped
 public class GroupDtoMapper {
-
-    @Inject
-    FunctionDtoMapper functionDtoMapper;
 
     public List<GroupDto> map(List<Group> groupList) {
         return groupList
@@ -22,14 +21,19 @@ public class GroupDtoMapper {
     public GroupDto map(Group group) {
         var entity = new GroupDto();
         entity.setId(group.getId());
-        entity.setCreated(group.getCreated());
+        entity.setCreated(DateUtil.formatDate(group.getCreated()));
         entity.setName(group.getName());
         entity.setDescription(group.getDescription());
         entity.setAdmin(group.isAdmin());
-        entity.setFunctions(functionDtoMapper.map(group.getFunctions()));
+        entity.setAllowedFunctions(mapAllowedFunctions(group.getFunctions()));
 
         return entity;
     }
 
-
+    private List<String> mapAllowedFunctions(List<Function> functions) {
+        return functions.stream()
+                .filter(Function::isAllowed)
+                .map(Function::getName)
+                .collect(Collectors.toList());
+    }
 }

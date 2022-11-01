@@ -1,16 +1,15 @@
 package br.com.ucs.eln.group.dto;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupDto {
-
     private Long id;
-    private LocalDateTime created;
+    private String created;
     private String name;
     private String description;
-    private boolean admin;
-    private List<FunctionDto> functions;
+    private Boolean admin;
+    private List<String> allowedFunctions = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -20,11 +19,11 @@ public class GroupDto {
         this.id = id;
     }
 
-    public LocalDateTime getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 
@@ -44,19 +43,19 @@ public class GroupDto {
         this.description = description;
     }
 
-    public boolean isAdmin() {
+    public Boolean getAdmin() {
         return admin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin(Boolean admin) {
         this.admin = admin;
     }
 
-    public List<FunctionDto> getFunctions() {
-        return functions;
+    public List<String> getAllowedFunctions() {
+        return allowedFunctions;
     }
 
-    public void setFunctions(List<FunctionDto> functions) {
-        this.functions = functions;
+    public void setAllowedFunctions(List<String> allowedFunctions) {
+        this.allowedFunctions = allowedFunctions;
     }
 }

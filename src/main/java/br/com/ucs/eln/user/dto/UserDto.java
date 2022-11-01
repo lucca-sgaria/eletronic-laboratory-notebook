@@ -8,6 +8,7 @@ public class UserDto {
     private String username;
     private String fullName;
     private String email;
+    private String password;
     private UserLockDto lock;
     private String description;
     private byte[] image;
@@ -51,6 +52,14 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public UserLockDto getLock() {

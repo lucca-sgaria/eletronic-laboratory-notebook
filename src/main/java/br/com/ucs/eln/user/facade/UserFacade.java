@@ -1,13 +1,19 @@
 package br.com.ucs.eln.user.facade;
 
 import br.com.ucs.eln.group.exception.GroupException;
-import br.com.ucs.eln.group.repository.GroupRepository;
-import br.com.ucs.eln.user.business.UserRegistrationEmailSender;
+import br.com.ucs.eln.user.business.UserFinishRegistrationBusiness;
+import br.com.ucs.eln.user.business.UserListingBusiness;
+import br.com.ucs.eln.user.business.UserLoginBusiness;
+import br.com.ucs.eln.user.business.UserManageBusiness;
+import br.com.ucs.eln.user.business.UserRegisterBusiness;
+import br.com.ucs.eln.user.business.UserSearchBusiness;
+import br.com.ucs.eln.user.business.UserUpdateBusiness;
 import br.com.ucs.eln.user.dto.UserDto;
+import br.com.ucs.eln.user.dto.UserDtoMapper;
 import br.com.ucs.eln.user.exception.UserException;
-import br.com.ucs.eln.user.generator.UserGenerator;
 import br.com.ucs.eln.user.model.User;
 import br.com.ucs.eln.user.repository.UserRepository;
+import br.com.ucs.eln.user.ws.model.UserPayload;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -18,38 +24,75 @@ import java.util.List;
 public class UserFacade {
 
     @Inject
+    UserUpdateBusiness userUpdateBusiness;
+
+    @Inject
     UserRepository userRepository;
+
     @Inject
-    GroupRepository groupRepository;
+    UserDtoMapper dtoMapper;
+
     @Inject
-    UserGenerator userGenerator;
+    UserLoginBusiness loginBusiness;
     @Inject
-    UserRegistrationEmailSender emailSender;
+    UserFinishRegistrationBusiness finishRegistrationBusiness;
+    @Inject
+    UserListingBusiness listingBusiness;
+    @Inject
+    UserSearchBusiness searchBusiness;
+    @Inject
+    UserRegisterBusiness registerBusiness;
+    @Inject
+    UserManageBusiness manageBusiness;
+
+    public User login(String email, String password) throws UserException {
+        return loginBusiness.login(email, password);
+    }
 
     @Transactional
-    public User registration(String email, Long groupId) throws UserException, GroupException {
-        var group = groupRepository.findExistingById(groupId);
-        var user = userGenerator.generatePendingUser(email, group);
-
-        emailSender.send(email);
-        return user;
+    public User finishRegistration(Long id,
+                                   String fullName,
+                                   String username,
+                                   String password,
+                                   String description) throws UserException {
+        return finishRegistrationBusiness.finishRegistration(id, fullName, username, password, description);
     }
 
-    public List<User> list(int page, int pageSize) {
-        return userRepository.list(page, pageSize);
+    public long totalUsersCount() {
+        return listingBusiness.totalCount();
     }
 
-    public int pageCount(int pageSize) {
-        return userRepository.pageCount(pageSize);
+    public int totalUsersPages(int pageSize) {
+        return listingBusiness.totalPages(pageSize);
     }
 
-    public long usersCount() {
-        return userRepository.count();
+    public List<User> listUsers(int page, int pageSize) {
+        return listingBusiness.listUsers(page, pageSize);
     }
 
-    public List<User> partialSearch(String searchKey, int page, int pageSize) {
-        return userRepository.partialSearch(searchKey, page, pageSize);
+    public List<User> searchUsers(int page, int pageSize, String searchKey) {
+        return searchBusiness.searchUsers(page, pageSize, searchKey);
     }
+
+    public long searchUsersCount(String searchKey) {
+        return searchBusiness.searchCount(searchKey);
+    }
+
+    @Transactional
+    public void registerUser(String email, Long groupId) throws UserException, GroupException {
+        registerBusiness.registerUser(email, groupId);
+    }
+
+    public User getUser(Long id) throws UserException {
+        return manageBusiness.getUserById(id);
+    }
+
+    @Transactional
+    public User updateUser(Long id, UserPayload userPayload) throws UserException, GroupException {
+        return manageBusiness.updateUser(id, dtoMapper.map(userPayload));
+    }
+
+    //-------------------------------------------------------------------------------
 
     public User findById(Long id) throws UserException {
         return userRepository.findExistingById(id);
@@ -58,7 +101,7 @@ public class UserFacade {
     @Transactional
     public User update(Long id, UserDto userDto) throws UserException {
         var user = userRepository.findExistingById(id);
-        return userRepository.updateUserFields(
+        return userUpdateBusiness.updateUserFields(
                 user,
                 userDto
         );
@@ -70,7 +113,6 @@ public class UserFacade {
         userRepository.delete(user);
     }
 
-    public User findByEmail(String email) throws UserException {
-        return userRepository.findExistingByEmail(email);
-    }
+
+
 }

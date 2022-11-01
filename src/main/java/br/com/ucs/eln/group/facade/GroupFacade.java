@@ -1,13 +1,11 @@
 package br.com.ucs.eln.group.facade;
 
-import br.com.ucs.eln.group.dto.GroupDto;
+import br.com.ucs.eln.group.business.GroupListingBusiness;
+import br.com.ucs.eln.group.business.GroupManageBusiness;
+import br.com.ucs.eln.group.business.GroupSearchBusiness;
+import br.com.ucs.eln.group.dto.GroupDtoMapper;
 import br.com.ucs.eln.group.exception.GroupException;
-import br.com.ucs.eln.group.generator.GroupGenerator;
 import br.com.ucs.eln.group.model.Group;
-import br.com.ucs.eln.group.repository.GroupRepository;
-import br.com.ucs.eln.user.exception.UserException;
-import br.com.ucs.eln.user.model.User;
-import br.com.ucs.eln.user.repository.UserRepository;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -18,67 +16,53 @@ import java.util.List;
 public class GroupFacade {
 
     @Inject
-    GroupRepository groupRepository;
+    GroupDtoMapper dtoMapper;
+
     @Inject
-    UserRepository userRepository;
+    GroupListingBusiness listingBusiness;
     @Inject
-    GroupGenerator groupGenerator;
+    GroupSearchBusiness searchBusiness;
+    @Inject
+    GroupManageBusiness manageBusiness;
 
-    @Transactional
-    public Group create(GroupDto groupDto) throws GroupException {
-        return groupGenerator.generate(groupDto);
+    public long totalUsersCount() {
+        return listingBusiness.totalCount();
     }
 
-    public List<Group> list(int page, int pageSize) {
-        return groupRepository.list(page, pageSize);
+    public List<Group> listGroups(int page, int pageSize) {
+        return listingBusiness.listGroups(page, pageSize);
     }
 
-    public int pageCount(int pageSize) {
-        return groupRepository.pageCount(pageSize);
+    public List<Group> listGroups() {
+        return listingBusiness.listGroups();
     }
 
-    public long groupsCount() {
-        return groupRepository.count();
+    public List<Group> searchGroups(int page, int pageSize, String searchKey) {
+        return searchBusiness.searchGroup(page, pageSize, searchKey);
     }
 
-    public List<Group> partialSearch(String searchKey, int page, int pageSize) {
-        return groupRepository.partialSearch(searchKey, page, pageSize);
-    }
-
-    public Group findById(Long id) throws GroupException {
-        return groupRepository.findExistingById(id);
+    public long searchUsersCount(String searchKey) {
+        return searchBusiness.searchCount(searchKey);
     }
 
     @Transactional
-    public Group update(Long id, GroupDto groupDto) throws GroupException {
-        var group = groupRepository.findExistingById(id);
-        return groupRepository.updateGroupFields(
-                group,
-                groupDto
-        );
+    public void addGroup(String name,
+                         String description,
+                         List<String> allowedFunctions,
+                         boolean admin) throws GroupException {
+        manageBusiness.addGroup(name, description, allowedFunctions, admin);
+    }
+
+    public Group getGroup(Long id) throws GroupException {
+        return manageBusiness.getGroupById(id);
     }
 
     @Transactional
-    public void delete(Long id) throws GroupException {
-        var group = groupRepository.findExistingById(id);
-        groupRepository.delete(group);
+    public void updateGroup(Long id,
+                            String name,
+                            String description,
+                            List<String> allowedFunctions,
+                            boolean admin) throws GroupException {
+        manageBusiness.updateGroup(id, name, description, allowedFunctions, admin);
     }
-
-    public List<User> listGroupUsers(Long id) throws GroupException {
-        var group = groupRepository.findExistingById(id);
-        return group.getUsers();
-    }
-
-    @Transactional
-    public void updateGroupUsers(Long id, List<Long> userIdList) throws GroupException, UserException {
-        var group = groupRepository.findExistingById(id);
-        var userList = userRepository.findExistingByIdList(userIdList);
-
-        groupRepository.updateGroupUsers(
-                group,
-                userList
-        );
-    }
-
-
 }

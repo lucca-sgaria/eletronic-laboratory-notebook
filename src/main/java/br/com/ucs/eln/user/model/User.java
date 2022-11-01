@@ -1,6 +1,7 @@
 package br.com.ucs.eln.user.model;
 
 import br.com.ucs.eln.group.model.Group;
+import br.com.ucs.eln.project.model.Project;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,9 +10,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "eln_user")
@@ -41,8 +44,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserLock lock = UserLock.LOCKED;
 
-    @ManyToOne(optional = true) //TODO alterar para false
+    @ManyToOne(optional = false)
     private Group group;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Project> projects;
 
     public Long getId() {
         return id;
@@ -122,5 +128,13 @@ public class User {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 }
