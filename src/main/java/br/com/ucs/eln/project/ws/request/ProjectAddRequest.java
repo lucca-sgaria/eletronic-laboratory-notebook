@@ -11,7 +11,7 @@ public class ProjectAddRequest extends Request {
     private String description;
     private int state;
     private boolean onlyProjectUsers;
-    private List<Long> userIds = new ArrayList<>();
+    private List<Long> projectUsers = new ArrayList<>();
 
     public String getNumber() {
         return number;
@@ -53,11 +53,23 @@ public class ProjectAddRequest extends Request {
         this.onlyProjectUsers = onlyProjectUsers;
     }
 
-    public List<Long> getUserIds() {
-        return userIds;
+    public List<Long> getProjectUsers() {
+        return projectUsers;
     }
 
-    public void setUserIds(List<Long> userIds) {
-        this.userIds = userIds;
+    public void setProjectUsers(List<Long> projectUsers) {
+        this.projectUsers = projectUsers;
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectAddRequest{" +
+                "number='" + number + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", state=" + state +
+                ", onlyProjectUsers=" + onlyProjectUsers +
+                ", projectUsers=" + projectUsers +
+                '}';
     }
 }

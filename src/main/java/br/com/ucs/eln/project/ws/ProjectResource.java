@@ -66,16 +66,15 @@ public class ProjectResource {
     }
 
     @POST
-    public Response addProject(@RestQuery long userId,
-                               ProjectAddRequest request) {
+    public Response addProject(ProjectAddRequest request) {
+        //System.out.println(request.toString());
         try {
             facade.addProject(
-                    userId,
                     request.getTitle(),
                     request.getDescription(),
                     request.getState(),
                     request.isOnlyProjectUsers(),
-                    request.getUserIds()
+                    request.getProjectUsers()
             );
             return ApiResponseBuilder.ok();
         } catch (Exception e) {
@@ -97,16 +96,18 @@ public class ProjectResource {
     @PUT
     @Path("/{id}")
     public Response updateProject(Long id, ProjectUpdateRequest request) {
+        //System.out.println(request.toString());
         try {
             facade.updateProject(
                     id,
                     request.getTitle(),
                     request.getDescription(),
                     request.getState(),
-                    request.isOnlyProjectUsers()
+                    request.isOnlyProjectUsers(),
+                    request.getProjectUsers()
             );
             return ApiResponseBuilder.ok();
-        } catch (ProjectException e) {
+        } catch (Exception e) {
             return ApiResponseBuilder.error(ProjectUpdateError.resolve(e));
         }
     }

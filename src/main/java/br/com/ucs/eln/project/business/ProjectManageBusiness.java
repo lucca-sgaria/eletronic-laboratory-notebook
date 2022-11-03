@@ -20,8 +20,7 @@ public class ProjectManageBusiness {
     SequenceGenerator sequenceGenerator;
 
 
-    public void addProject(User user,
-                           String title,
+    public void addProject(String title,
                            String description,
                            int state,
                            boolean onlyProjectUsers,
@@ -34,14 +33,7 @@ public class ProjectManageBusiness {
         project.setOnlyProjectUsers(onlyProjectUsers);
 
         repository.persist(project);
-        defineProjectUsers(user, userList, project);
-    }
-
-    private void defineProjectUsers(User user, List<User> userList, Project project) {
-        List<User> users = new ArrayList<>();
-        users.add(user);
-        users.addAll(userList);
-        project.setUsers(users);
+        project.setUsers(userList);
     }
 
     public Project getProjectById(Long id) throws ProjectException {
@@ -52,12 +44,14 @@ public class ProjectManageBusiness {
                               String title,
                               String description,
                               int state,
-                              boolean onlyProjectUsers) throws ProjectException {
+                              boolean onlyProjectUsers,
+                              List<User> userList) throws ProjectException {
         var project = getProjectById(id);
         project.setTitle(title);
         project.setDescription(description);
         project.setState(state);
         project.setOnlyProjectUsers(onlyProjectUsers);
+        project.setUsers(userList);
     }
 
 }

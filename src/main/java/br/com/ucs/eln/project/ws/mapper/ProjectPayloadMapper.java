@@ -7,6 +7,7 @@ import br.com.ucs.eln.user.model.User;
 
 import javax.enterprise.context.RequestScoped;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestScoped
 public class ProjectPayloadMapper {
@@ -25,13 +26,22 @@ public class ProjectPayloadMapper {
         payload.setTitle(project.getTitle());
         payload.setCreated(formatCreatedDate(project));
         payload.setDescription(project.getDescription());
-        payload.setExperimentsNumber(0);
+        payload.setExperimentsNumber(project.getExperiments().size());
         payload.setUsersNumber(project.getUsers().size());
-        if(user != null) payload.setParticipant(project.getUsers().contains(user));
+        if (user != null) payload.setParticipant(project.getUsers().contains(user));
         payload.setState(project.getState());
         payload.setOnlyProjectUsers(project.isOnlyProjectUsers());
+        payload.setProjectUsers(getProjectUsersIds(project));
 
         return payload;
+    }
+
+    private List<Long> getProjectUsersIds(Project project) {
+        return project
+                .getUsers()
+                .stream()
+                .map(User::getId)
+                .collect(Collectors.toList());
     }
 
     private static String formatCreatedDate(Project project) {
