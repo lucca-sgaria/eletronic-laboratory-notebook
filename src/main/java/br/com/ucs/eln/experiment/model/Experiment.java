@@ -1,5 +1,6 @@
 package br.com.ucs.eln.experiment.model;
 
+import br.com.ucs.eln.comment.model.Comment;
 import br.com.ucs.eln.project.model.Project;
 import br.com.ucs.eln.user.model.User;
 
@@ -9,8 +10,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "eln_experiment")
@@ -39,6 +42,9 @@ public class Experiment {
     private LocalDateTime executionDate;
 
     private byte[] mainImage;
+
+    @OneToMany(mappedBy = "experiment")
+    private List<Comment> comments;
 
     public Long getId() {
         return id;
@@ -110,5 +116,13 @@ public class Experiment {
 
     public void setMainImage(byte[] mainImage) {
         this.mainImage = mainImage;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }
