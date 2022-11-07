@@ -21,6 +21,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 
 @Path("experiments")
 @Produces(MediaType.APPLICATION_JSON)
@@ -63,13 +64,11 @@ public class ExperimentResource {
     public Response searchExperimentsCount(@RestQuery String searchKey,
                                            @RestQuery long userId) {
         var totalCount = facade.searchExperimentsCount(searchKey, userId);
-        System.out.println(totalCount);
         return ApiResponseBuilder.ok(resourceMapper.mapToSearchExperimentsCountResponse(totalCount));
     }
 
     @POST
     public Response addExperiment(ExperimentAddRequest request) {
-        System.out.println(request.toString());
         try {
             facade.addExperiment(
                     request.getName(),

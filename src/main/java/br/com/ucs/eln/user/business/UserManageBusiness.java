@@ -1,5 +1,6 @@
 package br.com.ucs.eln.user.business;
 
+import br.com.ucs.eln.globals.MD5Util;
 import br.com.ucs.eln.globals.StringUtil;
 import br.com.ucs.eln.group.exception.GroupException;
 import br.com.ucs.eln.group.model.Group;
@@ -50,7 +51,7 @@ public class UserManageBusiness {
 
     private static void attemptToUpdatePassword(User user, String password) {
         if (!StringUtil.isEmpty(password)) {
-            user.setPassword(password);
+            user.setPassword(MD5Util.passwordMD5(password));
         }
     }
 

@@ -1,6 +1,8 @@
 package br.com.ucs.eln.experiment.model;
 
+import br.com.ucs.eln.attachment.model.Attachment;
 import br.com.ucs.eln.comment.model.Comment;
+import br.com.ucs.eln.experiment_line.model.ExperimentLine;
 import br.com.ucs.eln.project.model.Project;
 import br.com.ucs.eln.user.model.User;
 
@@ -45,6 +47,12 @@ public class Experiment {
 
     @OneToMany(mappedBy = "experiment")
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "experiment")
+    private List<Attachment> attachments;
+
+    @OneToMany(mappedBy = "experiment")
+    private List<ExperimentLine> lines;
 
     public Long getId() {
         return id;
@@ -124,5 +132,21 @@ public class Experiment {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
+    }
+
+    public List<ExperimentLine> getLines() {
+        return lines;
+    }
+
+    public void setLines(List<ExperimentLine> lines) {
+        this.lines = lines;
     }
 }

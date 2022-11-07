@@ -1,5 +1,6 @@
 package br.com.ucs.eln.user.business;
 
+import br.com.ucs.eln.globals.MD5Util;
 import br.com.ucs.eln.user.exception.UserException;
 import br.com.ucs.eln.user.model.User;
 import br.com.ucs.eln.user.model.UserLock;
@@ -14,7 +15,6 @@ public class UserFinishRegistrationBusiness {
     @Inject
     UserRepository repository;
 
-
     public User finishRegistration(Long id,
                                    String fullName,
                                    String username,
@@ -24,7 +24,7 @@ public class UserFinishRegistrationBusiness {
         var user = repository.findExistingById(id);
         user.setFullName(fullName);
         user.setUsername(username);
-        user.setPassword(password);
+        user.setPassword(MD5Util.passwordMD5(password));
         user.setDescription(description);
         user.setLock(UserLock.UNLOCKED);
 

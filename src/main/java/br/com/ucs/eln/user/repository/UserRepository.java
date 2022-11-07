@@ -68,7 +68,6 @@ public class UserRepository implements PanacheRepository<User> {
                 .count();
     }
 
-// ----------------------------------------------------------------
 
     public List<User> findExistingByIdList(List<Long> idList) throws UserException {
         if (idList.isEmpty()) return new ArrayList<>();
