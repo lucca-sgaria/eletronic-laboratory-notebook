@@ -46,15 +46,13 @@ public class ProjectFacade {
     }
 
     @Transactional
-    public void addProject(long userId,
-                           String title,
+    public void addProject(String title,
                            String description,
                            int state,
                            boolean onlyProjectUsers,
                            List<Long> userIds) throws ProjectException, UserException {
-        var user = userRepository.findById(userId);
         var userList = userRepository.findExistingByIdList(userIds);
-        manageBusiness.addProject(user, title, description, state, onlyProjectUsers, userList);
+        manageBusiness.addProject(title, description, state, onlyProjectUsers, userList);
     }
 
     public Project getProject(Long id) throws ProjectException {
@@ -66,7 +64,9 @@ public class ProjectFacade {
                               String title,
                               String description,
                               int state,
-                              boolean onlyProjectUsers) throws ProjectException {
-        manageBusiness.updateProject(id, title, description, state, onlyProjectUsers);
+                              boolean onlyProjectUsers,
+                              List<Long> userIds) throws ProjectException, UserException {
+        var userList = userRepository.findExistingByIdList(userIds);
+        manageBusiness.updateProject(id, title, description, state, onlyProjectUsers, userList);
     }
 }

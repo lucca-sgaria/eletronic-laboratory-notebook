@@ -1,5 +1,6 @@
 package br.com.ucs.eln.project.model;
 
+import br.com.ucs.eln.experiment.model.Experiment;
 import br.com.ucs.eln.user.model.User;
 
 import javax.persistence.Column;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +46,9 @@ public class Project {
             inverseJoinColumns = {@JoinColumn(name = "user_id")}
     )
     private List<User> users;
+
+    @OneToMany(mappedBy = "project")
+    private List<Experiment> experiments;
 
     public Long getId() {
         return id;
@@ -106,5 +112,13 @@ public class Project {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public List<Experiment> getExperiments() {
+        return experiments;
+    }
+
+    public void setExperiments(List<Experiment> experiments) {
+        this.experiments = experiments;
     }
 }

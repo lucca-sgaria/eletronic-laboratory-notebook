@@ -86,13 +86,6 @@ public class ProjectRepository implements PanacheRepository<Project> {
                 .getSingleResult();
     }
 
-//    public long searchUserCount(String searchKey) {
-//        String query = "lower(name) LIKE ?1 " +
-//                " OR lower(description) LIKE ?1 ";
-//
-//        return find(query, "%" + searchKey.toLowerCase() + "%")
-//                .count();
-//    }
 
     public boolean existsByNumber(String number) {
         return find("number = ?1", number)

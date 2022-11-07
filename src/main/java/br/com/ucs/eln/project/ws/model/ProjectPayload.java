@@ -1,6 +1,8 @@
 package br.com.ucs.eln.project.ws.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectPayload implements Serializable {
     private long id;
@@ -13,6 +15,7 @@ public class ProjectPayload implements Serializable {
     private boolean participant;
     private int state;
     private boolean onlyProjectUsers;
+    private List<Long> projectUsers = new ArrayList<>();
 
     public ProjectPayload() {
     }
@@ -95,5 +98,13 @@ public class ProjectPayload implements Serializable {
 
     public void setOnlyProjectUsers(boolean onlyProjectUsers) {
         this.onlyProjectUsers = onlyProjectUsers;
+    }
+
+    public List<Long> getProjectUsers() {
+        return projectUsers;
+    }
+
+    public void setProjectUsers(List<Long> projectUsers) {
+        this.projectUsers = projectUsers;
     }
 }

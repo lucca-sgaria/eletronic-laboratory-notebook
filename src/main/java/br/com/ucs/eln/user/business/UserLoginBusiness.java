@@ -1,6 +1,7 @@
 package br.com.ucs.eln.user.business;
 
 
+import br.com.ucs.eln.globals.MD5Util;
 import br.com.ucs.eln.user.exception.UserException;
 import br.com.ucs.eln.user.exception.UserExceptionKey;
 import br.com.ucs.eln.user.model.User;
@@ -26,7 +27,8 @@ public class UserLoginBusiness {
     }
 
     private void confirmCorrectPassword(User user, String password) throws UserException {
-        if (!Objects.equals(user.getPassword(), password)) {
+        String md5p = MD5Util.passwordMD5(password);
+        if (!Objects.equals(user.getPassword(), md5p)) {
             throw new UserException(UserExceptionKey.INCORRECT_PASSWORD);
         }
     }

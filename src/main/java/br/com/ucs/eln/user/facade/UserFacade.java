@@ -7,8 +7,6 @@ import br.com.ucs.eln.user.business.UserLoginBusiness;
 import br.com.ucs.eln.user.business.UserManageBusiness;
 import br.com.ucs.eln.user.business.UserRegisterBusiness;
 import br.com.ucs.eln.user.business.UserSearchBusiness;
-import br.com.ucs.eln.user.business.UserUpdateBusiness;
-import br.com.ucs.eln.user.dto.UserDto;
 import br.com.ucs.eln.user.dto.UserDtoMapper;
 import br.com.ucs.eln.user.exception.UserException;
 import br.com.ucs.eln.user.model.User;
@@ -24,14 +22,10 @@ import java.util.List;
 public class UserFacade {
 
     @Inject
-    UserUpdateBusiness userUpdateBusiness;
-
-    @Inject
     UserRepository userRepository;
 
     @Inject
     UserDtoMapper dtoMapper;
-
     @Inject
     UserLoginBusiness loginBusiness;
     @Inject
@@ -92,27 +86,10 @@ public class UserFacade {
         return manageBusiness.updateUser(id, dtoMapper.map(userPayload));
     }
 
-    //-------------------------------------------------------------------------------
-
-    public User findById(Long id) throws UserException {
-        return userRepository.findExistingById(id);
-    }
-
-    @Transactional
-    public User update(Long id, UserDto userDto) throws UserException {
-        var user = userRepository.findExistingById(id);
-        return userUpdateBusiness.updateUserFields(
-                user,
-                userDto
-        );
-    }
-
     @Transactional
     public void delete(Long id) throws UserException {
         User user = userRepository.findExistingById(id);
         userRepository.delete(user);
     }
-
-
 
 }

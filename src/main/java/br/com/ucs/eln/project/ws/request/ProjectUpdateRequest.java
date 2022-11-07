@@ -2,12 +2,16 @@ package br.com.ucs.eln.project.ws.request;
 
 import br.com.ucs.eln.ws.request.Request;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProjectUpdateRequest extends Request {
     private String number;
     private String title;
     private String description;
     private int state;
     private boolean onlyProjectUsers;
+    private List<Long> projectUsers = new ArrayList<>();
 
     public String getNumber() {
         return number;
@@ -47,5 +51,25 @@ public class ProjectUpdateRequest extends Request {
 
     public void setOnlyProjectUsers(boolean onlyProjectUsers) {
         this.onlyProjectUsers = onlyProjectUsers;
+    }
+
+    public List<Long> getProjectUsers() {
+        return projectUsers;
+    }
+
+    public void setProjectUsers(List<Long> projectUsers) {
+        this.projectUsers = projectUsers;
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectUpdateRequest{" +
+                "number='" + number + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", state=" + state +
+                ", onlyProjectUsers=" + onlyProjectUsers +
+                ", projectUsers=" + projectUsers +
+                '}';
     }
 }
