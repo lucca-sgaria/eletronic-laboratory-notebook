@@ -19,7 +19,8 @@ public class AttachmentManageBusiness {
                               String name,
                               String externalLink,
                               byte[] file,
-                              String fileName) {
+                              String fileName,
+                              String extensionType) {
         var attachment = new Attachment();
         attachment.setName(name);
         attachment.setCreator(user);
@@ -27,6 +28,7 @@ public class AttachmentManageBusiness {
         attachment.setFile(file);
         attachment.setExperiment(experiment);
         attachment.setFileName(fileName);
+        attachment.setExtensionType(extensionType);
 
         repository.persist(attachment);
     }

@@ -1,16 +1,16 @@
 package br.com.ucs.eln.attachment.ws.model;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 public class AttachmentPayload implements Serializable {
     private long id;
-    private String creatorName;
+    private String creator;
     private String creationDate;
     private String name;
     private byte[] file;
     private String fileName;
     private String externalLink;
+    private String extensionType;
 
     public AttachmentPayload() {
     }
@@ -23,12 +23,12 @@ public class AttachmentPayload implements Serializable {
         this.id = id;
     }
 
-    public String getCreatorName() {
-        return creatorName;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setCreatorName(String creatorName) {
-        this.creatorName = creatorName;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public String getCreationDate() {
@@ -71,16 +71,11 @@ public class AttachmentPayload implements Serializable {
         this.externalLink = externalLink;
     }
 
-    @Override
-    public String toString() {
-        return "AttachmentPayload{" +
-                "id=" + id +
-                ", creatorName='" + creatorName + '\'' +
-                ", creationDate='" + creationDate + '\'' +
-                ", name='" + name + '\'' +
-                ", file=" + Arrays.toString(file) +
-                ", fileName='" + fileName + '\'' +
-                ", externalLink='" + externalLink + '\'' +
-                '}';
+    public String getExtensionType() {
+        return extensionType;
+    }
+
+    public void setExtensionType(String extensionType) {
+        this.extensionType = extensionType;
     }
 }

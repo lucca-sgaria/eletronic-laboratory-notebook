@@ -40,7 +40,7 @@ public class UserDtoMapper {
         dto.setEmail(user.getEmail());
         dto.setUsername(user.getUsername());
         dto.setDescription(user.getDescription());
-        //dto.setImage(user.getImage());
+        dto.setImage(user.getMainImage());
         dto.setGroupId(user.getGroupId());
         dto.setPassword(user.getPassword());
 

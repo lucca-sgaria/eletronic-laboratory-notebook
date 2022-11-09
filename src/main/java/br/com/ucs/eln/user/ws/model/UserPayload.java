@@ -14,6 +14,8 @@ public class UserPayload implements Serializable {
     private long groupId;
     private String groupName;
 
+    private byte[] mainImage;
+
     public long getId() {
         return id;
     }
@@ -84,6 +86,14 @@ public class UserPayload implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public byte[] getMainImage() {
+        return mainImage;
+    }
+
+    public void setMainImage(byte[] mainImage) {
+        this.mainImage = mainImage;
     }
 
     @Override

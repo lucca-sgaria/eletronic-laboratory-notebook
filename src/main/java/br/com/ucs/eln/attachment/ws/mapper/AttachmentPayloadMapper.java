@@ -21,13 +21,13 @@ public class AttachmentPayloadMapper {
     public AttachmentPayload map(Attachment attachment) {
         var payload = new AttachmentPayload();
         payload.setId(attachment.getId());
-        payload.setCreatorName(attachment.getCreator().getFullName());
+        payload.setCreator(attachment.getCreator().getEmail());
         payload.setCreationDate(formatDate(attachment.getCreated()));
-        payload.setCreatorName(attachment.getCreator().getFullName());
         payload.setExternalLink(attachment.getExternalLink());
         payload.setName(attachment.getName());
         payload.setFile(attachment.getFile());
         payload.setFileName(attachment.getFileName());
+        payload.setExtensionType(attachment.getExtensionType());
 
         return payload;
     }

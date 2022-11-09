@@ -25,6 +25,7 @@ public class UserPayloadMapper {
         entity.setLock(user.getLock().name());
         entity.setEmail(user.getEmail());
         entity.setDescription(user.getDescription());
+        entity.setMainImage(user.getImage());
 
         var group = user.getGroup();
         entity.setGroupId(group.getId());

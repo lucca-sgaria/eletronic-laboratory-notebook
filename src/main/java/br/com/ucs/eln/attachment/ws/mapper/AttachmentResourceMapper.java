@@ -15,9 +15,7 @@ public class AttachmentResourceMapper {
     AttachmentPayloadMapper payloadMapper;
 
     public AttachmentListResponse mapToListAttachmentsResponse(List<Attachment> attachmentList) {
-        AttachmentListResponse attachmentListResponse = new AttachmentListResponse(payloadMapper.map(attachmentList));
-        System.out.println(attachmentListResponse);
-        return attachmentListResponse;
+        return new AttachmentListResponse(payloadMapper.map(attachmentList));
     }
 
 }

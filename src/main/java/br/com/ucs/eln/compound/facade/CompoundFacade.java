@@ -6,6 +6,7 @@ import br.com.ucs.eln.compound.business.CompoundSearchBusiness;
 import br.com.ucs.eln.compound.exception.CompoundException;
 import br.com.ucs.eln.compound.model.Compound;
 import br.com.ucs.eln.compound.model.UnitMeasure;
+import br.com.ucs.eln.compound.ws.request.UnitMeasureAddRequest;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -61,5 +62,10 @@ public class CompoundFacade {
 
     public List<UnitMeasure> listUnitMeasure() {
         return listingBusiness.listUnitMeasure();
+    }
+
+    @Transactional
+    public void addUnitMeasure(UnitMeasureAddRequest request) throws CompoundException {
+        manageBusiness.addUnitMeasure(request);
     }
 }
