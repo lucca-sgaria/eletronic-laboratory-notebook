@@ -110,4 +110,12 @@ public class ExperimentResource {
             return ApiResponseBuilder.error(ExperimentUpdateError.resolve(e));
         }
     }
+
+    @GET
+    @Path("/list-resumed")
+    public Response listExperimentsResumed(@RestQuery long projectId) {
+        var experimentList = facade.listExperiments(projectId);
+        return ApiResponseBuilder.ok(resourceMapper.mapToListExperimentsResumedResponse(experimentList));
+    }
+
 }

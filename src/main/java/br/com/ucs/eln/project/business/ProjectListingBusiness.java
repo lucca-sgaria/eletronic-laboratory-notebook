@@ -38,4 +38,7 @@ public class ProjectListingBusiness {
                 .anyMatch(function -> function.getName().contains("listAllProjects"));
     }
 
+    public List<Project> listOpenedUserProjects(User user) {
+        return repository.listOpenedUserProjects(user);
+    }
 }

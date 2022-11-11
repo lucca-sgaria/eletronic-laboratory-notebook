@@ -3,6 +3,7 @@ package br.com.ucs.eln.project.repository;
 import br.com.ucs.eln.project.exception.ProjectException;
 import br.com.ucs.eln.project.exception.ProjectExceptionKey;
 import br.com.ucs.eln.project.model.Project;
+import br.com.ucs.eln.project.model.ProjectState;
 import br.com.ucs.eln.user.model.User;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Page;
@@ -101,4 +102,11 @@ public class ProjectRepository implements PanacheRepository<Project> {
         return project;
     }
 
+    public List<Project> listOpenedUserProjects(User user) {
+        String hql = "SELECT DISTINCT(pr) FROM Project pr " +
+                " LEFT JOIN pr.users us WHERE pr.state < ?1 AND (?2 in (us))  ";
+
+        return find(hql, Sort.by("pr.id"), ProjectState.COMPLETED, user)
+                .list();
+    }
 }

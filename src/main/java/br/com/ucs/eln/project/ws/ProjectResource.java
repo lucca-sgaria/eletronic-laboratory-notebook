@@ -1,5 +1,6 @@
 package br.com.ucs.eln.project.ws;
 
+import br.com.ucs.eln.group.model.Group;
 import br.com.ucs.eln.project.exception.ProjectException;
 import br.com.ucs.eln.project.facade.ProjectFacade;
 import br.com.ucs.eln.project.model.Project;
@@ -21,6 +22,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("projects")
 @Produces(MediaType.APPLICATION_JSON)
@@ -67,7 +69,6 @@ public class ProjectResource {
 
     @POST
     public Response addProject(ProjectAddRequest request) {
-        //System.out.println(request.toString());
         try {
             facade.addProject(
                     request.getTitle(),
@@ -96,7 +97,6 @@ public class ProjectResource {
     @PUT
     @Path("/{id}")
     public Response updateProject(Long id, ProjectUpdateRequest request) {
-        //System.out.println(request.toString());
         try {
             facade.updateProject(
                     id,
@@ -112,5 +112,10 @@ public class ProjectResource {
         }
     }
 
-
+    @GET
+    @Path("/list-resumed")
+    public Response listUserProjectsResumed(@RestQuery long userId) {
+        var projectList = facade.listUserProjects(userId);
+        return ApiResponseBuilder.ok(resourceMapper.mapToUserListResumedProjectsResponse(projectList));
+    }
 }

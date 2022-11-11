@@ -6,6 +6,7 @@ import br.com.ucs.eln.experiment.business.ExperimentSearchBusiness;
 import br.com.ucs.eln.experiment.exception.ExperimentException;
 import br.com.ucs.eln.experiment.model.Experiment;
 import br.com.ucs.eln.project.exception.ProjectException;
+import br.com.ucs.eln.project.model.Project;
 import br.com.ucs.eln.project.repository.ProjectRepository;
 import br.com.ucs.eln.user.exception.UserException;
 import br.com.ucs.eln.user.repository.UserRepository;
@@ -13,6 +14,7 @@ import br.com.ucs.eln.user.repository.UserRepository;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestScoped
@@ -73,4 +75,12 @@ public class ExperimentFacade {
         manageBusiness.updateExperiment(id, name, description, mainImage);
     }
 
+    public List<Experiment> listExperiments(long projectId) {
+        try {
+            var project = projectRepository.findExistingById(projectId);
+            return project.getExperiments();
+        } catch (ProjectException e) {
+            return new ArrayList<>();
+        }
+    }
 }
