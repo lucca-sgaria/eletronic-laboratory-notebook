@@ -97,7 +97,6 @@ public class ExperimentResource {
     @PUT
     @Path("/{id}")
     public Response updateExperiment(Long id, ExperimentUpdateRequest request) {
-        System.out.println(request.toString());
         try {
             facade.updateExperiment(
                     id,

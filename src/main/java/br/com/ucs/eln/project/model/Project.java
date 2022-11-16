@@ -121,4 +121,19 @@ public class Project {
     public void setExperiments(List<Experiment> experiments) {
         this.experiments = experiments;
     }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", created=" + created +
+                ", number='" + number + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", state=" + state +
+                ", onlyProjectUsers=" + onlyProjectUsers +
+                ", users=" + users +
+                ", experiments=" + experiments +
+                '}';
+    }
 }

@@ -58,8 +58,8 @@ public class ProjectRepository implements PanacheRepository<Project> {
 
     public List<Project> searchProjects(String searchKey, int page, int pageSize, User user) {
         String hql = "SELECT DISTINCT(pr) FROM Project pr " +
-                " LEFT JOIN pr.users us WHERE (pr.onlyProjectUsers = false) OR (?1 in (us)) " +
-                " AND ( lower(number) LIKE ?2 OR lower(title) LIKE ?2) ";
+                " LEFT JOIN pr.users us WHERE ((pr.onlyProjectUsers = false) OR (?1 in (us))) " +
+                " AND (lower(number) LIKE ?2 OR lower(title) LIKE ?2) ";
 
         return find(hql, Sort.by("pr.id"), user, "%" + searchKey.toLowerCase() + "%")
                 .page(Page.of(page, pageSize))

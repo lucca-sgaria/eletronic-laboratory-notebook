@@ -42,7 +42,6 @@ public class ExperimentLineResource {
 
     @POST
     public Response add(ExperimentLineAddRequest request) {
-        System.out.println(request.toString());
         try {
             facade.addExperimentLine(
                     request.getExperimentId(),

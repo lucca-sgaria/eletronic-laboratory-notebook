@@ -103,6 +103,7 @@ public class CompoundResource {
             );
             return ApiResponseBuilder.ok();
         } catch (CompoundException e) {
+            System.out.println(e.getKey());
             return ApiResponseBuilder.error(CompoundUpdateError.resolve(e));
         }
     }
