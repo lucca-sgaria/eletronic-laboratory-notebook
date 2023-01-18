@@ -133,7 +133,6 @@ public class UserResource {
             var user = facade.updateUser(id, userPayload);
             return ApiResponseBuilder.ok(resourceMapper.mapToUserUpdateResponse(user));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return ApiResponseBuilder.error(UserUpdateError.resolve(e));
         }
     }
@@ -143,6 +142,31 @@ public class UserResource {
     public Response delete(Long id) throws UserException {
         facade.delete(id);
         return Response.ok().build();
+    }
+
+    @GET
+    @Path("/searchProfile")
+    public Response searchProfile(@RestQuery String searchKey,
+                                  @RestQuery Long userId) {
+        System.out.println("searchKey " + searchKey);
+        System.out.println("userId " + userId);
+        try {
+            var user = facade.searchUserProfile(searchKey, userId);
+            return ApiResponseBuilder.ok(resourceMapper.mapTosearchProfileResponse(user));
+        } catch (UserException e) {
+            return ApiResponseBuilder.error(UserGetError.resolve(e));
+        }
+    }
+
+    @GET
+    @Path("/profileProjects")
+    public Response profileProjects(@RestQuery Long userId) {
+        try {
+            var projectList = facade.searchUserProfileProjects(userId);
+            return ApiResponseBuilder.ok(resourceMapper.mapToProfileProjectsResponse(projectList));
+        } catch (UserException e) {
+            return ApiResponseBuilder.error(UserGetError.resolve(e));
+        }
     }
 
 }

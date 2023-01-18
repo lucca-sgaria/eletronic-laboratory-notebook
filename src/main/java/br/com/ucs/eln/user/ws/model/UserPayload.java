@@ -1,6 +1,7 @@
 package br.com.ucs.eln.user.ws.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class UserPayload implements Serializable {
     private long id;
@@ -108,6 +109,7 @@ public class UserPayload implements Serializable {
                 ", password='" + password + '\'' +
                 ", groupId=" + groupId +
                 ", groupName='" + groupName + '\'' +
+                ", mainImage=" + Arrays.toString(mainImage) +
                 '}';
     }
 }

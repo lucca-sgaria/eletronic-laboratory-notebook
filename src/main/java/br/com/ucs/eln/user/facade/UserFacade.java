@@ -1,10 +1,12 @@
 package br.com.ucs.eln.user.facade;
 
 import br.com.ucs.eln.group.exception.GroupException;
+import br.com.ucs.eln.project.model.Project;
 import br.com.ucs.eln.user.business.UserFinishRegistrationBusiness;
 import br.com.ucs.eln.user.business.UserListingBusiness;
 import br.com.ucs.eln.user.business.UserLoginBusiness;
 import br.com.ucs.eln.user.business.UserManageBusiness;
+import br.com.ucs.eln.user.business.UserProfileBusiness;
 import br.com.ucs.eln.user.business.UserRegisterBusiness;
 import br.com.ucs.eln.user.business.UserSearchBusiness;
 import br.com.ucs.eln.user.dto.UserDtoMapper;
@@ -16,7 +18,9 @@ import br.com.ucs.eln.user.ws.model.UserPayload;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestScoped
 public class UserFacade {
@@ -38,6 +42,8 @@ public class UserFacade {
     UserRegisterBusiness registerBusiness;
     @Inject
     UserManageBusiness manageBusiness;
+    @Inject
+    UserProfileBusiness profileBusiness;
 
     public User login(String email, String password) throws UserException {
         return loginBusiness.login(email, password);
@@ -92,4 +98,16 @@ public class UserFacade {
         userRepository.delete(user);
     }
 
+    public User searchUserProfile(String searchKey, Long userId) throws UserException {
+        return profileBusiness.searchUser(searchKey, userId);
+    }
+
+    public List<Project> searchUserProfileProjects(Long userId) throws UserException {
+        User user = userRepository.findExistingById(userId);
+        return user
+                .getProjects()
+                .stream()
+                .sorted(Comparator.comparing(Project::getId).reversed())
+                .collect(Collectors.toList());
+    }
 }
