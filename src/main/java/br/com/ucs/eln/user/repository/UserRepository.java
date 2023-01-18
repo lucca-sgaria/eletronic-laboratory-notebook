@@ -68,6 +68,14 @@ public class UserRepository implements PanacheRepository<User> {
                 .count();
     }
 
+    public User searchExactUser(String searchKey) {
+        String query = "fullName = ?1 " +
+                " OR username = ?1 " +
+                " OR email = ?1 ";
+
+        return find(query, Sort.by("id"), searchKey)
+                .firstResult();
+    }
 
     public List<User> findExistingByIdList(List<Long> idList) throws UserException {
         if (idList.isEmpty()) return new ArrayList<>();

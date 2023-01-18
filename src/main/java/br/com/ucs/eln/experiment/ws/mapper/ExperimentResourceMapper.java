@@ -1,12 +1,14 @@
 package br.com.ucs.eln.experiment.ws.mapper;
 
+import br.com.ucs.eln.experiment.model.Experiment;
 import br.com.ucs.eln.experiment.ws.response.ExperimentGetResponse;
 import br.com.ucs.eln.experiment.ws.response.ExperimentListResponse;
+import br.com.ucs.eln.experiment.ws.response.ExperimentResumedListResponse;
 import br.com.ucs.eln.experiment.ws.response.ExperimentSearchCountResponse;
 import br.com.ucs.eln.experiment.ws.response.ExperimentSearchResponse;
 import br.com.ucs.eln.experiment.ws.response.ExperimentTotalCountResponse;
-import br.com.ucs.eln.experiment.model.Experiment;
 import br.com.ucs.eln.user.repository.UserRepository;
+import br.com.ucs.eln.ws.response.ApiResponse;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -17,6 +19,8 @@ public class ExperimentResourceMapper {
 
     @Inject
     ExperimentPayloadMapper payloadMapper;
+    @Inject
+    ExperimentResumedPayloadMapper resumedPayloadMapper;
     @Inject
     UserRepository userRepository;
 
@@ -40,5 +44,9 @@ public class ExperimentResourceMapper {
 
     public ExperimentGetResponse mapToExperimentGetResponse(Experiment experiment) {
         return new ExperimentGetResponse(payloadMapper.map(experiment, null));
+    }
+
+    public ExperimentResumedListResponse mapToListExperimentsResumedResponse(List<Experiment> experimentList) {
+        return new ExperimentResumedListResponse(resumedPayloadMapper.map(experimentList));
     }
 }

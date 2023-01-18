@@ -6,9 +6,11 @@ import br.com.ucs.eln.compound.model.Compound;
 import br.com.ucs.eln.compound.ws.flag.CompoundAddError;
 import br.com.ucs.eln.compound.ws.flag.CompoundGetError;
 import br.com.ucs.eln.compound.ws.flag.CompoundUpdateError;
+import br.com.ucs.eln.compound.ws.flag.UnitMeasureAddError;
 import br.com.ucs.eln.compound.ws.mapper.CompoundResourceMapper;
 import br.com.ucs.eln.compound.ws.request.CompoundAddRequest;
 import br.com.ucs.eln.compound.ws.request.CompoundUpdateRequest;
+import br.com.ucs.eln.compound.ws.request.UnitMeasureAddRequest;
 import br.com.ucs.eln.ws.response.ApiResponseBuilder;
 import org.jboss.resteasy.reactive.RestQuery;
 
@@ -101,6 +103,7 @@ public class CompoundResource {
             );
             return ApiResponseBuilder.ok();
         } catch (CompoundException e) {
+            System.out.println(e.getKey());
             return ApiResponseBuilder.error(CompoundUpdateError.resolve(e));
         }
     }
@@ -110,5 +113,16 @@ public class CompoundResource {
     public Response listUnitMeasure() {
         var unitMeasureList = facade.listUnitMeasure();
         return ApiResponseBuilder.ok(resourceMapper.mapToListUnitMeasureResponse(unitMeasureList));
+    }
+
+    @POST
+    @Path("/add-unit-measure")
+    public Response addUnitMeasure(UnitMeasureAddRequest request) {
+        try {
+            facade.addUnitMeasure(request);
+            return ApiResponseBuilder.ok();
+        } catch (CompoundException e) {
+            return ApiResponseBuilder.error(UnitMeasureAddError.resolve(e));
+        }
     }
 }

@@ -40,7 +40,6 @@ public class AttachmentResource {
 
     @POST
     public Response add(AttachmentAddRequest request) {
-        System.out.println(request.toString());
         try {
             facade.addAttachment(
                     request.getExperimentId(),
@@ -48,7 +47,8 @@ public class AttachmentResource {
                     request.getName(),
                     request.getExternalLink(),
                     request.getFile(),
-                    request.getFileName()
+                    request.getFileName(),
+                    request.getExtensionType()
             );
             return ApiResponseBuilder.ok();
         } catch (Exception e) {

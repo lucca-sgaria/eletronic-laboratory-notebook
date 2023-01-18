@@ -3,10 +3,12 @@ package br.com.ucs.eln.project.ws.mapper;
 import br.com.ucs.eln.project.model.Project;
 import br.com.ucs.eln.project.ws.response.ProjectGetResponse;
 import br.com.ucs.eln.project.ws.response.ProjectListResponse;
+import br.com.ucs.eln.project.ws.response.ProjectListResumedResponse;
 import br.com.ucs.eln.project.ws.response.ProjectSearchCountResponse;
 import br.com.ucs.eln.project.ws.response.ProjectSearchResponse;
 import br.com.ucs.eln.project.ws.response.ProjectTotalCountResponse;
 import br.com.ucs.eln.user.repository.UserRepository;
+import br.com.ucs.eln.ws.response.ApiResponse;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -17,6 +19,8 @@ public class ProjectResourceMapper {
 
     @Inject
     ProjectPayloadMapper payloadMapper;
+    @Inject
+    ProjectResumedPayloadMapper reumedPayloadMapper;
     @Inject
     UserRepository userRepository;
 
@@ -40,5 +44,9 @@ public class ProjectResourceMapper {
 
     public ProjectGetResponse mapToProjectGetResponse(Project project) {
         return new ProjectGetResponse(payloadMapper.map(project, null));
+    }
+
+    public ApiResponse mapToUserListResumedProjectsResponse(List<Project> projectList) {
+        return new ProjectListResumedResponse(reumedPayloadMapper.map(projectList));
     }
 }

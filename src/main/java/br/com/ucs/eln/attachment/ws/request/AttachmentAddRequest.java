@@ -2,8 +2,6 @@ package br.com.ucs.eln.attachment.ws.request;
 
 import br.com.ucs.eln.ws.request.Request;
 
-import java.util.Arrays;
-
 public class AttachmentAddRequest extends Request {
     private long experimentId;
     private long userId;
@@ -11,6 +9,7 @@ public class AttachmentAddRequest extends Request {
     private String externalLink;
     private String fileName;
     private byte[] file;
+    private String extensionType;
 
     public long getExperimentId() {
         return experimentId;
@@ -60,15 +59,11 @@ public class AttachmentAddRequest extends Request {
         this.file = file;
     }
 
-    @Override
-    public String toString() {
-        return "AttachmentAddRequest{" +
-                "experimentId=" + experimentId +
-                ", userId=" + userId +
-                ", name='" + name + '\'' +
-                ", externalLink='" + externalLink + '\'' +
-                ", fileName='" + fileName + '\'' +
-                ", file=" + Arrays.toString(file) +
-                '}';
+    public String getExtensionType() {
+        return extensionType;
+    }
+
+    public void setExtensionType(String extensionType) {
+        this.extensionType = extensionType;
     }
 }

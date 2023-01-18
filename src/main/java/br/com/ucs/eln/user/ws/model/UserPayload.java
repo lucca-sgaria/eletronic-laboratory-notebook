@@ -1,6 +1,7 @@
 package br.com.ucs.eln.user.ws.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class UserPayload implements Serializable {
     private long id;
@@ -13,6 +14,8 @@ public class UserPayload implements Serializable {
 
     private long groupId;
     private String groupName;
+
+    private byte[] mainImage;
 
     public long getId() {
         return id;
@@ -86,6 +89,14 @@ public class UserPayload implements Serializable {
         this.password = password;
     }
 
+    public byte[] getMainImage() {
+        return mainImage;
+    }
+
+    public void setMainImage(byte[] mainImage) {
+        this.mainImage = mainImage;
+    }
+
     @Override
     public String toString() {
         return "UserPayload{" +
@@ -98,6 +109,7 @@ public class UserPayload implements Serializable {
                 ", password='" + password + '\'' +
                 ", groupId=" + groupId +
                 ", groupName='" + groupName + '\'' +
+                ", mainImage=" + Arrays.toString(mainImage) +
                 '}';
     }
 }

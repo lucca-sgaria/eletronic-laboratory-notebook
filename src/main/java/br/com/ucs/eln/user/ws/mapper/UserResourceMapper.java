@@ -1,17 +1,21 @@
 package br.com.ucs.eln.user.ws.mapper;
 
 import br.com.ucs.eln.group.model.Function;
+import br.com.ucs.eln.project.model.Project;
 import br.com.ucs.eln.user.model.User;
 import br.com.ucs.eln.user.repository.UserRepository;
+import br.com.ucs.eln.user.ws.response.SearchProfileProjectResponse;
 import br.com.ucs.eln.user.ws.response.UserFinishRegistrationResponse;
 import br.com.ucs.eln.user.ws.response.UserGetResponse;
 import br.com.ucs.eln.user.ws.response.UserListResponse;
 import br.com.ucs.eln.user.ws.response.UserLoginResponse;
 import br.com.ucs.eln.user.ws.response.UserSearchCountResponse;
+import br.com.ucs.eln.user.ws.response.UserSearchProfileResponse;
 import br.com.ucs.eln.user.ws.response.UserSearchResponse;
 import br.com.ucs.eln.user.ws.response.UserTotalCountResponse;
 import br.com.ucs.eln.user.ws.response.UserTotalPagesResponse;
 import br.com.ucs.eln.user.ws.response.UserUpdateResponse;
+import br.com.ucs.eln.ws.response.ApiResponse;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -25,6 +29,10 @@ public class UserResourceMapper {
     UserRepository userRepository;
     @Inject
     UserPayloadMapper userPayloadMapper;
+    @Inject
+    UserProfilePayloadMapper userProfilePayloadMapper;
+    @Inject
+    ProfileProjectPayloadMapper profileProjectPayloadMapper;
 
     public UserLoginResponse mapToUserLoginResponse(User user) {
         var response = new UserLoginResponse();
@@ -89,5 +97,13 @@ public class UserResourceMapper {
 
     public UserUpdateResponse mapToUserUpdateResponse(User user) {
         return new UserUpdateResponse(userPayloadMapper.map(user));
+    }
+
+    public ApiResponse mapTosearchProfileResponse(User user) {
+        return new UserSearchProfileResponse(userProfilePayloadMapper.map(user));
+    }
+
+    public ApiResponse mapToProfileProjectsResponse(List<Project> projectList) {
+        return new SearchProfileProjectResponse(profileProjectPayloadMapper.map(projectList));
     }
 }

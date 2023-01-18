@@ -6,6 +6,7 @@ import br.com.ucs.eln.compound.model.Compound;
 import br.com.ucs.eln.compound.model.UnitMeasure;
 import br.com.ucs.eln.compound.repository.CompoundRepository;
 import br.com.ucs.eln.compound.repository.UnitMeasureRepository;
+import br.com.ucs.eln.compound.ws.request.UnitMeasureAddRequest;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -73,4 +74,18 @@ public class CompoundManageBusiness {
     }
 
 
+    public void addUnitMeasure(UnitMeasureAddRequest request) throws CompoundException {
+        confirmNameIsUnique(request.getName());
+
+        var unitMeasure = new UnitMeasure();
+        unitMeasure.setName(request.getName());
+
+        unitMeasureRepository.persist(unitMeasure);
+    }
+
+    private void confirmNameIsUnique(String name) throws CompoundException {
+        if(unitMeasureRepository.existsByName(name)) {
+            throw new CompoundException(CompoundExceptionKey.UNIT_MEASURE_ALREADY_EXISTS);
+        }
+    }
 }

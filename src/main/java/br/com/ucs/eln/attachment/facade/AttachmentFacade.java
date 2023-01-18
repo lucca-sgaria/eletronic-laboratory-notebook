@@ -33,12 +33,13 @@ public class AttachmentFacade {
                               String name,
                               String externalLink,
                               byte[] file,
-                              String fileName) throws UserException, ExperimentException {
+                              String fileName,
+                              String extensionType) throws UserException, ExperimentException {
 
         var user = userRepository.findExistingById(userId);
         var experiment = experimentRepository.findExistingById(experimentId);
 
-        manageBusiness.addAttachment(experiment, user, name, externalLink, file, fileName);
+        manageBusiness.addAttachment(experiment, user, name, externalLink, file, fileName, extensionType);
     }
 
     @Transactional

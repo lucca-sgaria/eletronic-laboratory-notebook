@@ -3,6 +3,7 @@ package br.com.ucs.eln.experiment.business;
 import br.com.ucs.eln.experiment.exception.ExperimentException;
 import br.com.ucs.eln.experiment.model.Experiment;
 import br.com.ucs.eln.experiment.repository.ExperimentRepository;
+import br.com.ucs.eln.globals.StringUtil;
 import br.com.ucs.eln.project.exception.ProjectException;
 import br.com.ucs.eln.project.model.Project;
 import br.com.ucs.eln.sequence.SequenceGenerator;
@@ -25,7 +26,7 @@ public class ExperimentManageBusiness {
                               String description,
                               User creator,
                               Project project,
-                              byte[] mainImage)  {
+                              byte[] mainImage) {
 
         var experiment = new Experiment();
         experiment.setNumber(sequenceGenerator.generateExperimentNumber());
@@ -43,8 +44,8 @@ public class ExperimentManageBusiness {
                                  String description,
                                  byte[] mainImage) throws ExperimentException {
         var experiment = getExperimentById(id);
-        experiment.setName(name);
-        experiment.setDescription(description);
+        if (!StringUtil.isEmpty(name)) experiment.setName(name);
+        if (!StringUtil.isEmpty(description)) experiment.setDescription(description);
         experiment.setMainImage(mainImage);
     }
 

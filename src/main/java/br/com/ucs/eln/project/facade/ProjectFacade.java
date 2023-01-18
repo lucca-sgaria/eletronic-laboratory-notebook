@@ -69,4 +69,9 @@ public class ProjectFacade {
         var userList = userRepository.findExistingByIdList(userIds);
         manageBusiness.updateProject(id, title, description, state, onlyProjectUsers, userList);
     }
+
+    public List<Project> listUserProjects(long userId) {
+        var user = userRepository.findById(userId);
+        return listingBusiness.listOpenedUserProjects(user);
+    }
 }

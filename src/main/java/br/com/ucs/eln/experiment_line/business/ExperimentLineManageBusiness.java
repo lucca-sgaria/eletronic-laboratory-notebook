@@ -8,6 +8,8 @@ import br.com.ucs.eln.experiment_line.repository.ExperimentLineRepository;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @RequestScoped
 public class ExperimentLineManageBusiness {
@@ -26,6 +28,10 @@ public class ExperimentLineManageBusiness {
         line.setAmount(amount);
         line.setMoles(moles);
         line.setType(ExperimentLineType.valueOf(type));
+
+        if (experiment.getExecutionDate() == null) {
+            experiment.setExecutionDate(LocalDateTime.now());
+        }
 
         repository.persist(line);
     }

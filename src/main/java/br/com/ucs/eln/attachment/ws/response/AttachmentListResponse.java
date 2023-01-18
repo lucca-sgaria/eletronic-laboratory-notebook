@@ -21,10 +21,4 @@ public class AttachmentListResponse extends ApiResponse {
         this.attachmentList = attachmentList;
     }
 
-    @Override
-    public String toString() {
-        return "AttachmentListResponse{" +
-                "attachmentList=" + attachmentList.stream().map(at -> at.toString()).collect(Collectors.joining(",")) +
-                '}';
-    }
 }
